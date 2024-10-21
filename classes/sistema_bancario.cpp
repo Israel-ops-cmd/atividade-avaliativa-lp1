@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
-#include <locale.h>
+#include <iomanip> //biblioteca pra determinar a quantidade de casas decimais
+#include <locale.h> //biblioteca pra determinar o uso correto de acentuação e pontuação
 
 using namespace std;
 
@@ -9,12 +9,15 @@ class Cliente {
     private:
         string nome, cpf;
     public:
+        // Método para obter o nome do cliente
         string getnome(){
             return nome;
         }
+        // Método para obter o cpf do cliente
         string getcpf(){
             return cpf;
         }
+        //construtor da classe Cliente
         Cliente(string n, string c){
             nome = n;
             cpf = c;
@@ -25,14 +28,17 @@ class ContaBancaria {
     private:
         int numero;
         double saldo;
-        Cliente &titular;
+        Cliente &titular; //Referência ao cliente que é o titular da conta
     public:
-        ContaBancaria(int n, Cliente &t, double s=0): numero(n), titular(t), saldo(s){
+        //Construtor da classe ContaBancaria
+        ContaBancaria(int n, Cliente &t, double s=0): numero(n), titular(t), saldo(s){ //inicializa os atributos da classe ContaBancaria
 
         }
+        // Método para depositar o valor em uma conta
         void depositar(double valor){
             saldo += valor;
         }
+        // Método para sacar o valor de uma conta
         void sacar(double valor){
             if(valor <= saldo){
                 saldo-=valor;
@@ -41,6 +47,7 @@ class ContaBancaria {
                 cout << "Saldo insuficente para saldo." << endl;
             }
         }
+        // Método para transferir um valor de uma conta para outra
         void transferir(double valor, ContaBancaria &destino){
             if(valor <= saldo){
                 saldo -= valor;
@@ -51,6 +58,7 @@ class ContaBancaria {
                 cout << "Não tem como transferir o valor pois o saldo está insuficente!";
             }
         }
+        // Método para transferir o valor igualmente para duas contas distintas
         void transferir(double valor, ContaBancaria &destino1, ContaBancaria &destino2){
             double valor_por_conta = valor / 2;
             if(valor <= saldo){
@@ -63,9 +71,11 @@ class ContaBancaria {
                 cout << "Não há valor suficiente para fazer o depósito!" << endl;
             }
             }
+        // Método para exibir o saldo atual da conta
         void exibirSaldo(){
-            cout << "Saldo atual da conta " << numero << ": R$ " << fixed << setprecision(2) << saldo << endl;
+            cout << "Saldo atual da conta " << numero << ": R$ " << fixed << setprecision(0) << saldo << endl;
         }
+        // Método para exibir as informações da conta
         void exibirInformacoes(){
             cout << "Titular: " << titular.getnome() << ", ";
             cout << "CPF: " << titular.getcpf() << endl;
@@ -78,8 +88,9 @@ class ContaBancaria {
 
 
 int main() {
-    // Criação dos clientes
+    // Define a localidade para uso correto da acentuação
     setlocale(LC_ALL, "portuguese");
+    // Criação dos clientes
     Cliente cliente1("Ana", "111.111.111-11");
     Cliente cliente2("Bruno", "222.222.222-22");
     Cliente cliente3("Carla", "333.333.333-33");
